@@ -112,7 +112,10 @@ const ChartTooltipContent = React.forwardRef<
     }
 >(
   (
-    {
+    props,
+    ref
+  ) => {
+    const {
       active,
       payload,
       className,
@@ -126,9 +129,7 @@ const ChartTooltipContent = React.forwardRef<
       color,
       nameKey,
       labelKey,
-    },
-    ref
-  ) => {
+    } = props as any
     const { config } = useChart()
 
     const tooltipLabel = React.useMemo(() => {
@@ -186,11 +187,11 @@ const ChartTooltipContent = React.forwardRef<
           {payload.map((item: any, index: number) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`
             const itemConfig = getPayloadConfigFromPayload(config, item, key)
-            const indicatorColor = color || item.payload.fill || item.color
+            const indicatorColor = color || item.payload?.fill || item.color
 
             return (
               <div
-                key={item.dataKey}
+                key={item.dataKey || index}
                 className={cn(
                   "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                   indicator === "dot" && "items-center"
@@ -265,9 +266,10 @@ const ChartLegendContent = React.forwardRef<
     }
 >(
   (
-    { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
+    props,
     ref
   ) => {
+    const { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey } = props as any
     const { config } = useChart()
 
     if (!payload?.length) {
@@ -326,9 +328,9 @@ function getPayloadConfigFromPayload(
 
   const payloadPayload =
     "payload" in payload &&
-    typeof payload.payload === "object" &&
-    payload.payload !== null
-      ? payload.payload
+    typeof (payload as any).payload === "object" &&
+    (payload as any).payload !== null
+      ? (payload as any).payload
       : undefined
 
   let configLabelKey: string = key
