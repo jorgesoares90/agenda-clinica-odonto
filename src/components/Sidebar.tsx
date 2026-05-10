@@ -22,6 +22,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import logoImage from "@/assets/logo.png";
 
 export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCollapsed: (v: boolean) => void }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
