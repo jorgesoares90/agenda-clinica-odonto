@@ -26,4 +26,5 @@ export interface Lead {
   agendamento_criado_em: string | null;
   agendamento_fora_horario_comercial: boolean;
   id_agendamento: string | null;
+  dentista?: string; // Adding based on new requirements even if not in original table spec
 }

@@ -10,7 +10,8 @@ import {
   ChevronRight,
   Sun,
   Moon,
-  Database
+  Database,
+  Calendar as CalendarIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -38,6 +39,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
   const navItems = [
     { label: "Home", href: "/", icon: LayoutDashboard },
     { label: "Lista de Clientes", href: "/leads", icon: Users },
+    { label: "Agenda", href: "/agenda", icon: CalendarIcon },
     { label: "Configurações", href: "/settings", icon: Settings },
   ];
 
@@ -59,7 +61,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
       {/* Mobile Overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         >
           <div className="fixed inset-y-0 left-0 w-64 bg-background border-r p-4 shadow-xl animate-in slide-in-from-left duration-300">
