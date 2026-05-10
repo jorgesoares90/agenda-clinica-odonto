@@ -6,7 +6,6 @@ import {
   ChevronDown, 
   Search,
   Download,
-  Clock,
   ExternalLink,
   ChevronLeft,
   ChevronRight,
@@ -38,14 +37,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { getSupabaseClient, Lead } from "@/lib/supabase";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { LeadSidebar } from "@/components/LeadSidebar";
 
 type Period = 'today' | 'yesterday' | 'last7days' | 'thisMonth' | 'lastMonth' | 'thisYear' | 'custom';
 
@@ -61,6 +54,7 @@ export function LeadsPage() {
   const [statusFilter, setStatusFilter] = React.useState<'all' | 'commercial' | 'afterHours'>('all');
   const [currentPage, setCurrentPage] = React.useState(1);
   const [selectedLead, setSelectedLead] = React.useState<Lead | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const recordsPerPage = 50;
 
   const supabase = getSupabaseClient();
@@ -149,6 +143,11 @@ export function LeadsPage() {
     (currentPage - 1) * recordsPerPage,
     currentPage * recordsPerPage
   );
+
+  const handleOpenSidebar = (lead: Lead) => {
+    setSelectedLead(lead);
+    setIsSidebarOpen(true);
+  };
 
   const handleExportCSV = () => {
     if (filteredData.length === 0) {
@@ -302,7 +301,7 @@ export function LeadsPage() {
                     <TableRow 
                       key={lead.inicio_atendimento_em + lead.whatsapp} 
                       className="cursor-pointer hover:bg-muted/30"
-                      onClick={() => setSelectedLead(lead)}
+                      onClick={() => handleOpenSidebar(lead)}
                     >
                       <TableCell className="font-medium">{lead.nome}</TableCell>
                       <TableCell className="text-muted-foreground font-mono text-xs">{lead.whatsapp}</TableCell>
@@ -389,91 +388,11 @@ export function LeadsPage() {
         </div>
       </div>
 
-      {/* Modal Detalhes (Reused from Home but could be extracted) */}
-      <Dialog open={!!selectedLead} onOpenChange={() => setSelectedLead(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-2xl flex items-center justify-between pr-8">
-              <span>Detalhes do Atendimento</span>
-              {selectedLead?.data_hora_agendada && (
-                <Badge className="bg-green-500 hover:bg-green-600">Agendado</Badge>
-              )}
-            </DialogTitle>
-            <DialogDescription>
-              Informações completas extraídas da conversa via WhatsApp.
-            </DialogDescription>
-          </DialogHeader>
-
-          {selectedLead && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-              <div className="space-y-4">
-                <section>
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Paciente</label>
-                  <p className="text-lg font-bold">{selectedLead.nome}</p>
-                </section>
-                
-                <section>
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">WhatsApp</label>
-                  <div className="flex items-center gap-2">
-                    <p className="font-mono">{selectedLead.whatsapp}</p>
-                    <a 
-                      href={`https://wa.me/${selectedLead.whatsapp.replace(/\D/g, '')}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline flex items-center gap-1 text-sm font-medium"
-                    >
-                      Abrir conversa <ExternalLink className="h-3 w-3" />
-                    </a>
-                  </div>
-                </section>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <section>
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Iniciado em</label>
-                    <p className="text-sm">{format(new Date(selectedLead.inicio_atendimento_em), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })}</p>
-                  </section>
-                  <section>
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tipo de Horário</label>
-                    <p className="text-sm">
-                      {selectedLead.inicio_fora_horario_comercial ? "Fora do Horário Comercial" : "Horário Comercial"}
-                    </p>
-                  </section>
-                </div>
-
-                <section>
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Procedimento</label>
-                  <p className="text-sm bg-secondary p-2 rounded-md">{selectedLead.procedimento || "Não informado"}</p>
-                </section>
-
-                {selectedLead.data_hora_agendada && (
-                  <section className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 rounded-lg">
-                    <label className="text-xs font-semibold text-green-700 dark:text-green-400 uppercase tracking-wider">Data do Agendamento</label>
-                    <p className="text-lg font-bold text-green-800 dark:text-green-200">
-                      {format(new Date(selectedLead.data_hora_agendada), "dd/MM/yyyy 'às' HH:mm")}
-                    </p>
-                  </section>
-                )}
-              </div>
-
-              <div className="space-y-4">
-                <section>
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Motivo do Contato</label>
-                  <p className="text-sm italic text-muted-foreground border-l-2 border-primary/30 pl-3">
-                    "{selectedLead.motivo_contato || "Nenhum motivo específico registrado."}"
-                  </p>
-                </section>
-
-                <section>
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Resumo da Conversa (IA)</label>
-                  <div className="text-sm leading-relaxed p-4 bg-muted/30 rounded-lg border max-h-[300px] overflow-y-auto whitespace-pre-wrap">
-                    {selectedLead.resumo_conversa || "O resumo da conversa não está disponível."}
-                  </div>
-                </section>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <LeadSidebar 
+        lead={selectedLead} 
+        open={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+      />
     </div>
   );
 }
