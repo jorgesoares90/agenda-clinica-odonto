@@ -73,7 +73,7 @@ function SettingsPage() {
                 required
               />
               <p className="text-[0.8rem] text-muted-foreground">
-                Encontrada em Settings -> API -> Project URL
+                Encontrada em Settings {"->"} API {"->"} Project URL
               </p>
             </div>
 
@@ -88,7 +88,7 @@ function SettingsPage() {
                 required
               />
               <p className="text-[0.8rem] text-muted-foreground">
-                Encontrada em Settings -> API -> anon public key
+                Encontrada em Settings {"->"} API {"->"} anon public key
               </p>
             </div>
 
