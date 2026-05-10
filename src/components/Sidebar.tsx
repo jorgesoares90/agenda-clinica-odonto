@@ -22,6 +22,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import logoImage from "@/assets/logo.png";
 
 export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCollapsed: (v: boolean) => void }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -49,10 +50,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
     <>
       {/* Mobile Header */}
       <div className="lg:hidden sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-background px-4">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">M</div>
-          <span className="font-semibold">Meu Dentista</span>
-        </div>
+        <img src={logoImage} alt="Amanda Soares - Odontologia Especializada" className="h-10 w-auto object-contain" />
         <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(true)}>
           <Menu className="h-6 w-6" />
         </Button>
@@ -66,10 +64,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
         >
           <div className="fixed inset-y-0 left-0 w-64 bg-background border-r p-4 shadow-xl animate-in slide-in-from-left duration-300">
             <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">M</div>
-                <span className="font-semibold">Meu Dentista</span>
-              </div>
+              <img src={logoImage} alt="Amanda Soares" className="h-12 w-auto object-contain" />
               <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
                 <X className="h-6 w-6" />
               </Button>
@@ -99,16 +94,14 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
           collapsed ? "w-20" : "w-64"
         )}
       >
-        <div className="p-4 flex items-center justify-between border-b">
-          {!collapsed && (
-            <div className="flex items-center gap-2 overflow-hidden animate-in fade-in duration-500">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold shrink-0">M</div>
-              <span className="font-bold whitespace-nowrap">Meu Dentista</span>
+        <div className={cn("flex items-center justify-between border-b", collapsed ? "p-2" : "p-4")}>
+          {!collapsed ? (
+            <div className="flex-1 overflow-hidden animate-in fade-in duration-500">
+              <img src={logoImage} alt="Amanda Soares - Odontologia Especializada" className="h-14 w-auto object-contain mx-auto" />
             </div>
-          )}
-          {collapsed && (
+          ) : (
             <div className="mx-auto">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">M</div>
+              <img src={logoImage} alt="AS" className="h-10 w-10 object-cover rounded-lg" style={{ objectPosition: '50% 35%' }} />
             </div>
           )}
           <Button 

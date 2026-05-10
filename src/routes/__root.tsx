@@ -76,8 +76,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Meu Dentista - Dashboard Estratégico" },
-      { name: "description", content: "Dashboard estratégico para clínica odontológica Meu Dentista" },
+      { title: "Amanda Soares - Odontologia Especializada" },
+      { name: "description", content: "Dashboard estratégico - Amanda Soares Odontologia Especializada" },
     ],
     links: [
       {
