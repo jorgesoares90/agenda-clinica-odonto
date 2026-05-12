@@ -78,6 +78,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Amanda Soares - Odontologia Especializada" },
       { name: "description", content: "Dashboard estratégico - Amanda Soares Odontologia Especializada" },
+      { property: "og:title", content: "Amanda Soares - Odontologia Especializada" },
+      { name: "twitter:title", content: "Amanda Soares - Odontologia Especializada" },
+      { property: "og:description", content: "Dashboard estratégico - Amanda Soares Odontologia Especializada" },
+      { name: "twitter:description", content: "Dashboard estratégico - Amanda Soares Odontologia Especializada" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dc36adf0-427d-4e45-8f83-05cf3f1fb2ef/id-preview-b8228df1--a28403df-23c8-4a4c-baea-5d7dbcea2020.lovable.app-1778457142366.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dc36adf0-427d-4e45-8f83-05cf3f1fb2ef/id-preview-b8228df1--a28403df-23c8-4a4c-baea-5d7dbcea2020.lovable.app-1778457142366.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       {
