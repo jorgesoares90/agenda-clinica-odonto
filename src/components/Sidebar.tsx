@@ -95,15 +95,17 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean; setCo
         )}
       >
         <div className={cn("flex items-center justify-between border-b", collapsed ? "p-2" : "p-4")}>
-          {!collapsed ? (
-            <div className="flex-1 overflow-hidden animate-in fade-in duration-500">
-              <img src={logoImage} alt="Amanda Soares - Odontologia Especializada" className="h-14 w-auto object-contain mx-auto" />
-            </div>
-          ) : (
-            <div className="mx-auto">
-              <img src={logoImage} alt="AS" className="h-10 w-10 object-cover rounded-lg" style={{ objectPosition: '50% 35%' }} />
-            </div>
-          )}
+          <div className={cn("flex-1 flex justify-center overflow-hidden transition-all duration-300", collapsed ? "h-10" : "h-14")}>
+            <img 
+              src={logoImage} 
+              alt="Amanda Soares" 
+              className={cn(
+                "transition-all duration-300",
+                collapsed ? "h-10 w-10 object-cover rounded-lg" : "h-14 w-auto object-contain"
+              )} 
+              style={collapsed ? { objectPosition: '50% 35%' } : undefined}
+            />
+          </div>
           <Button 
             variant="ghost" 
             size="icon" 
