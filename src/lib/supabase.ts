@@ -27,7 +27,7 @@ export const getSupabaseClient = () => {
   const config = getSupabaseConfig();
   if (!config) return null;
   
-  if (supabaseInstance && lastConfig?.url === config.url && lastConfig?.key === config.key) {
+  if (supabaseInstance && lastConfig === config) {
     return supabaseInstance;
   }
   
