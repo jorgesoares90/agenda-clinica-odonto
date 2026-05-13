@@ -8,10 +8,20 @@ export const getSupabaseConfig = () => {
   return { url, key };
 };
 
+let supabaseInstance: any = null;
+let lastConfig: { url: string; key: string } | null = null;
+
 export const getSupabaseClient = () => {
   const config = getSupabaseConfig();
   if (!config) return null;
-  return createClient(config.url, config.key);
+  
+  if (supabaseInstance && lastConfig?.url === config.url && lastConfig?.key === config.key) {
+    return supabaseInstance;
+  }
+  
+  lastConfig = config;
+  supabaseInstance = createClient(config.url, config.key);
+  return supabaseInstance;
 };
 
 export interface Lead {
