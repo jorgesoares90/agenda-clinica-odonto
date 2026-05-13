@@ -1,17 +1,39 @@
 import { createClient } from '@supabase/supabase-js';
 
+let cachedConfig: { url: string; key: string } | null = null;
+
 export const getSupabaseConfig = () => {
   if (typeof window === 'undefined') return null;
   const url = localStorage.getItem('supabase_url');
   const key = localStorage.getItem('supabase_anon_key');
-  if (!url || !key) return null;
-  return { url, key };
+  
+  if (!url || !key) {
+    cachedConfig = null;
+    return null;
+  }
+  
+  if (cachedConfig?.url === url && cachedConfig?.key === key) {
+    return cachedConfig;
+  }
+  
+  cachedConfig = { url, key };
+  return cachedConfig;
 };
+
+let supabaseInstance: any = null;
+let lastConfig: { url: string; key: string } | null = null;
 
 export const getSupabaseClient = () => {
   const config = getSupabaseConfig();
   if (!config) return null;
-  return createClient(config.url, config.key);
+  
+  if (supabaseInstance && lastConfig === config) {
+    return supabaseInstance;
+  }
+  
+  lastConfig = config;
+  supabaseInstance = createClient(config.url, config.key);
+  return supabaseInstance;
 };
 
 export interface Lead {
